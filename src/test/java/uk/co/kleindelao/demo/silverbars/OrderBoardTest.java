@@ -8,6 +8,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 import static uk.co.kleindelao.demo.silverbars.OrderType.BUY;
+import static uk.co.kleindelao.demo.silverbars.OrderType.SELL;
 
 class OrderBoardTest {
   private final OrderBoard board = new OrderBoard();
@@ -67,5 +68,34 @@ class OrderBoardTest {
 
     // Then
     then(board.getAllOrders()).isEmpty();
+  }
+
+  @Test
+  void shouldReturnOrdersByType() {
+    // Given
+    final Order buyOrder =
+            Order.builder()
+                    .grams(1500)
+                    .orderType(BUY)
+                    .pricePerKilogram(300)
+                    .userId(randomAlphanumeric(12, 24))
+                    .build();
+    board.registerOrder(buyOrder);
+    final Order sellOrder =
+            Order.builder()
+                    .grams(1500)
+                    .orderType(SELL)
+                    .pricePerKilogram(300)
+                    .userId(randomAlphanumeric(12, 24))
+                    .build();
+    board.registerOrder(sellOrder);
+
+    // When
+    final List<Order> buyOrders = board.getOrdersOfType(BUY);
+    final List<Order> sellOrders = board.getOrdersOfType(SELL);
+
+    // Then
+    then(buyOrders).containsExactly(buyOrder);
+    then(sellOrders).containsExactly(sellOrder);
   }
 }
