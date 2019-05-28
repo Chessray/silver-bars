@@ -19,4 +19,8 @@ public class OrderBoard {
     public List<Order> getAllOrders() {
         return unmodifiableList(orders);
     }
+
+    public void cancelOrder(final Order order) {
+        orders.remove(order);
+    }
 }

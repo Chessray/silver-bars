@@ -31,7 +31,7 @@ class OrderBoardTest {
   }
 
   @Test
-  void shouldNotReturnModifiableList() {
+  void shouldReturnUnmodifiableList() {
     // Given
     final Order order =
             Order.builder()
@@ -48,5 +48,24 @@ class OrderBoardTest {
     // Then
     thenThrownBy(orders::clear).isInstanceOf(UnsupportedOperationException.class);
     thenThrownBy(() -> orders.add(order)).isInstanceOf(UnsupportedOperationException.class);
+  }
+
+  @Test
+  void shouldCancelOrder() {
+    // Given
+    final Order order =
+            Order.builder()
+                    .grams(1500)
+                    .orderType(BUY)
+                    .pricePerKilogram(300)
+                    .userId(randomAlphanumeric(12, 24))
+                    .build();
+    board.registerOrder(order);
+
+    // When
+    board.cancelOrder(order);
+
+    // Then
+    then(board.getAllOrders()).isEmpty();
   }
 }
