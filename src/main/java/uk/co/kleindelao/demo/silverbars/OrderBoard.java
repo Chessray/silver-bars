@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.SortedMap;
 
 import static java.util.Collections.unmodifiableList;
+import static java.util.Comparator.naturalOrder;
+import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.*;
+import static uk.co.kleindelao.demo.silverbars.OrderType.SELL;
 
 public class OrderBoard {
   private final List<Order> orders;
@@ -36,6 +39,7 @@ public class OrderBoard {
     return ImmutableSortedMap.copyOf(
         orders.stream()
             .filter(order -> order.getOrderType() == orderType)
-            .collect(groupingBy(Order::getPricePerKilogram, summingInt(Order::getGrams))));
+            .collect(groupingBy(Order::getPricePerKilogram, summingInt(Order::getGrams))),
+        orderType == SELL ? naturalOrder() : reverseOrder());
   }
 }
