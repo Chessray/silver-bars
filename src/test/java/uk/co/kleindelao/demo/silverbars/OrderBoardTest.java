@@ -105,4 +105,33 @@ class OrderBoardTest {
                 .entrySet()
                 .toArray(new Map.Entry[0]));
   }
+
+  @Test
+  void shouldSortBuySummariesFromHighToLowPrice() {
+    // TODO
+  }
+
+  @Test
+  void shouldSortSellSummariesFromLowToHighPrice() {
+    // Given
+    final int pricePerKilogram1_2 = 300;
+    final int grams1 = 1500;
+    final Order order1 = createOrder(grams1, SELL, pricePerKilogram1_2);
+    final int grams2 = 2000;
+    final Order order2 = createOrder(grams2, SELL, pricePerKilogram1_2);
+    final int grams3 = 4200;
+    final int pricePerKilogram3 = pricePerKilogram1_2 + 5;
+    final Order order3 = createOrder(grams3, SELL, pricePerKilogram3);
+    board.registerOrder(order1);
+    board.registerOrder(order2);
+    board.registerOrder(order3);
+
+    // When
+    final Map<Integer, Integer> summaries = board.getSummarisedOrdersOfType(SELL);
+
+    // Then
+    then(summaries)
+            .containsExactlyEntriesOf(
+                    ImmutableMap.of(pricePerKilogram1_2, grams1 + grams2, pricePerKilogram3, grams3));
+  }
 }

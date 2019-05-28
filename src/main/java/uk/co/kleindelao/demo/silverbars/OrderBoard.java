@@ -1,8 +1,10 @@
 package uk.co.kleindelao.demo.silverbars;
 
+import com.google.common.collect.ImmutableSortedMap;
+
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+import java.util.SortedMap;
 
 import static java.util.Collections.unmodifiableList;
 import static java.util.stream.Collectors.*;
@@ -30,9 +32,10 @@ public class OrderBoard {
     return orders.stream().filter(order -> order.getOrderType() == orderType).collect(toList());
   }
 
-  public Map<Integer, Integer> getSummarisedOrdersOfType(final OrderType orderType) {
-    return orders.stream()
-        .filter(order -> order.getOrderType() == orderType)
-        .collect(groupingBy(Order::getPricePerKilogram, summingInt(Order::getGrams)));
+  public SortedMap<Integer, Integer> getSummarisedOrdersOfType(final OrderType orderType) {
+    return ImmutableSortedMap.copyOf(
+        orders.stream()
+            .filter(order -> order.getOrderType() == orderType)
+            .collect(groupingBy(Order::getPricePerKilogram, summingInt(Order::getGrams))));
   }
 }
