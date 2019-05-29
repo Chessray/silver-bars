@@ -12,7 +12,10 @@ import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.*;
 import static uk.co.kleindelao.demo.silverbars.OrderType.SELL;
 
-/** Live Order Board that allows users to register or cancel orders for silver bars. */
+/**
+ * Live Order Board that allows users to {@link #registerOrder(String, OrderType, int, int)
+ * register} or {@link #cancelOrder(Order) cancel} {@link Order orders} for silver bars.
+ */
 public class OrderBoard {
   private final List<Order> orders;
 
@@ -36,6 +39,18 @@ public class OrderBoard {
     return orders.stream().filter(order -> order.getOrderType() == orderType).collect(toList());
   }
 
+  /**
+   * Returns a summary of all {@link Order orders} with type {@code orderType}, sorted by {@link
+   * Order#getPricePerKilogram() price per kilogram}. Orders with the same {@link
+   * Order#getPricePerKilogram() price per kilogram} will be added up into a single figure. For
+   * {@code orderType} {@link OrderType#SELL SELL}, the returned Map will be sorted in ascending,
+   * for {@code orderType} {@link OrderType#BUY BUY} in descending price per kilogram.
+   *
+   * @param orderType The {@link OrderType}.
+   * @return A summary of all {@link Order orders} with type {@code orderType}, sorted by {@link
+   *     Order#getPricePerKilogram() price per kilogram} (ascending or descending depending on
+   *     {@code orderType}).
+   */
   public SortedMap<Integer, Integer> getSummarisedOrdersOfType(final OrderType orderType) {
     return ImmutableSortedMap.copyOf(
         orders.stream()
@@ -44,6 +59,15 @@ public class OrderBoard {
         orderType == SELL ? naturalOrder() : reverseOrder());
   }
 
+  /**
+   * Creates and registers an {@link Order} with the given values.
+   *
+   * @param userId The {@link Order#getUserId() user ID}.
+   * @param orderType The {@link OrderType}.
+   * @param grams The order amount in grams.
+   * @param pricePerKg The order's price per kilogram.
+   * @return The registered {@link Order}.
+   */
   public Order registerOrder(
       final String userId, final OrderType orderType, final int grams, final int pricePerKg) {
     final Order order =
