@@ -12,6 +12,7 @@ import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.*;
 import static uk.co.kleindelao.demo.silverbars.OrderType.SELL;
 
+/** Live Order Board that allows users to register or cancel orders for silver bars. */
 public class OrderBoard {
   private final List<Order> orders;
 
@@ -19,7 +20,7 @@ public class OrderBoard {
     orders = new LinkedList<>();
   }
 
-  public void registerOrder(final Order order) {
+  void registerOrder(final Order order) {
     orders.add(order);
   }
 
@@ -41,5 +42,18 @@ public class OrderBoard {
             .filter(order -> order.getOrderType() == orderType)
             .collect(groupingBy(Order::getPricePerKilogram, summingInt(Order::getGrams))),
         orderType == SELL ? naturalOrder() : reverseOrder());
+  }
+
+  public Order registerOrder(
+      final String userId, final OrderType orderType, final int grams, final int pricePerKg) {
+    final Order order =
+        Order.builder()
+            .userId(userId)
+            .orderType(orderType)
+            .grams(grams)
+            .pricePerKilogram(pricePerKg)
+            .build();
+    registerOrder(order);
+    return order;
   }
 }

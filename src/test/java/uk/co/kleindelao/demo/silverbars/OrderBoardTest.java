@@ -9,6 +9,7 @@ import java.util.Map;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.assertj.core.api.BDDAssertions.thenThrownBy;
+import static uk.co.kleindelao.demo.silverbars.BddAssertions.then;
 import static uk.co.kleindelao.demo.silverbars.OrderType.BUY;
 import static uk.co.kleindelao.demo.silverbars.OrderType.SELL;
 
@@ -24,7 +25,26 @@ class OrderBoardTest {
     board.registerOrder(order);
 
     // Then
-    then(board.getAllOrders()).containsExactly(order);
+    then(board).hasOnlyAllOrders(order);
+  }
+
+  @Test
+  void shouldCreateAndRegisterOrderWithGivenValues() {
+    // Given
+    final OrderType orderType = BUY;
+    final int grams = 1500;
+    final int pricePerKg = 300;
+
+    // When
+    final Order order = board.registerOrder(randomAlphanumeric(12, 24), orderType, grams, pricePerKg);
+
+    // Then
+    then(order)
+        .isNotNull()
+        .hasOrderType(orderType)
+        .hasGrams(grams)
+        .hasPricePerKilogram(pricePerKg);
+    then(board).hasOnlyAllOrders(order);
   }
 
   private Order createOrder(final int grams, final OrderType buy, final int pricePerKilogram) {
@@ -60,7 +80,7 @@ class OrderBoardTest {
     board.cancelOrder(order);
 
     // Then
-    then(board.getAllOrders()).isEmpty();
+    then(board).hasNoAllOrders();
   }
 
   @Test

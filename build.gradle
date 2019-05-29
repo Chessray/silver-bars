@@ -10,6 +10,7 @@ plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
     id "io.freefair.lombok" version "3.6.4"
+    id 'org.assertj.generator' version '0.0.6b'
 }
 
 repositories {
@@ -17,6 +18,23 @@ repositories {
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
 }
+
+assertJ {
+    entryPoints {
+        standard = false // No more standard generation
+        bdd = true       // Turn on BDD
+        junitSoft = false // and JUnit Soft
+    }
+}
+
+sourceSets {
+    main {
+        // must specify assertJ block to have it applied
+        assertJ {}
+    }
+    test {}
+}
+
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
