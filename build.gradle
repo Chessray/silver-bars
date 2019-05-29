@@ -11,6 +11,7 @@ plugins {
     id 'java-library'
     id "io.freefair.lombok" version "3.6.4"
     id 'org.assertj.generator' version '0.0.6b'
+    id 'jacoco'
 }
 
 repositories {
@@ -56,4 +57,8 @@ dependencies {
 test {
     // Enable JUnit 5 (Gradle 4.6+).
     useJUnitPlatform()
+}
+
+jacoco {
+    toolVersion = "0.8.3"
 }
