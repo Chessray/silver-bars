@@ -1,3 +1,4 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![CircleCI](https://circleci.com/gh/Chessray/silver-bars.svg?style=svg)](https://circleci.com/gh/Chessray/silver-bars)
 # silver-bars
 Solution to an interview exercise called Silver Bars Marketplace.
