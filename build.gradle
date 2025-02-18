@@ -9,7 +9,7 @@
 plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
-    id "io.freefair.lombok" version "3.8.4"
+    id "io.freefair.lombok" version "8.12.1"
     id 'org.assertj.generator' version '1.1.1'
     id 'jacoco'
 }
@@ -20,25 +20,23 @@ repositories {
     jcenter()
 }
 
-assertJ {
-    entryPoints {
-        standard = false // No more standard generation
-        bdd = true       // Turn on BDD
-        junitSoft = false // and JUnit Soft
-    }
-}
-
 sourceSets {
     main {
         // must specify assertJ block to have it applied
-        assertJ {}
+        assertJ {
+            entryPoints {
+                standard = false // No more standard generation
+                bdd = true       // Turn on BDD
+                junitSoft = false // and JUnit Soft
+            }
+        }
     }
     test {}
 }
 
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 21
+targetCompatibility = 21
 
 dependencies {
     // This dependency is exported to consumers, that is to say found on their compile classpath.
@@ -49,8 +47,8 @@ dependencies {
 
     // Junit
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.11.4"
-    testCompile "org.assertj:assertj-core:3.27.3"
-    testCompile "org.apache.commons:commons-lang3:3.17.0"
+    testImplementation "org.assertj:assertj-core:3.27.3"
+    testImplementation "org.apache.commons:commons-lang3:3.17.0"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.11.4"
 }
 
